@@ -74,4 +74,20 @@ class AdminController extends Controller
 
         return redirect()->back()->with('success',"You have successfully Update!");
     }
+ 
+    public function mainDashboard()
+    {
+        return view('mainDashboard');
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+        return redirect()->route('login');
+    }
+
+    public function redirectLogin()
+    {
+        return view('dashboard');
+    }
 }
