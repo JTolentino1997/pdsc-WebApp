@@ -9,20 +9,23 @@ use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
-    public function dashboard()
-    {
-        return view('admin.dashboard');
-    }
+    // public function dashboard()
+    // {
+    //     return view('mainDashboard');
+    // }
 
-    public function createUser()
-    {
-        $employees = Employees::all();
+    // public function createUser()
+    // {
+    //     $employees = Employees::all();
         
-        return view('library.user', compact('employees'));
+    //     // dd($employees);
 
-        // return view('registerTest');
-        // return "<h1>sample test</h1>";
-    }
+    //     return view('mainDashboard', compact('employees'));
+
+     
+    //     // return view('registerTest');
+    //     // return "<h1>sample test</h1>";
+    // }
 
     public function saveUser(UserRequest $request)
     {
@@ -86,8 +89,5 @@ class AdminController extends Controller
         return redirect()->route('login');
     }
 
-    public function redirectLogin()
-    {
-        return view('dashboard');
-    }
+ 
 }
