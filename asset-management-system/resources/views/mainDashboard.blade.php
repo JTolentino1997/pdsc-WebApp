@@ -17,19 +17,16 @@
                         <div class="row">
                             <div class="col-12 col-md-4 ">
                                 <div class="card border-0">
-                                    <div class="card-body py-4">
+                                    <div class="card-body py-4 ">
                                         <h5 class="mb-2 fw-bold">
-                                            Memebers Progress
+                                          ACTIVE ACCOUNT
                                         </h5>
                                         <p class="mb-2 fw-bold">
-                                            $72,540
+                                           {{$employees->count()}}
                                         </p>
                                         <div class="mb-0">
                                             <span class="badge text-success me-2">
-                                                +9.0%
-                                            </span>
-                                            <span class=" fw-bold">
-                                                Since Last Month
+                                                
                                             </span>
                                         </div>
                                     </div>
@@ -124,7 +121,7 @@
                                                    <form action="{{ route('library.deleteUser', $employee->id) }}" method="POST" class="d-inline">
                                                       @csrf
                                                       @method('DELETE')
-                                                      <button class="btn btn-danger" onclick="return confirm('are you sure you want to delete this user?');">
+                                                      <button class="btn btn-danger" onclick="return confirm('are you sure you want to delete this user {{ $employee->lastName }}, {{ $employee->firstName }}?');">
                                                          Delete
                                                       </button>
                                                    </form>
@@ -243,4 +240,5 @@
         </div>
     </div>
      
+    
 @endsection

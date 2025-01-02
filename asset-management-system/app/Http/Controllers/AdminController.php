@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
 use App\Models\Employees;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,19 +14,18 @@ class AdminController extends Controller
     // {
     //     return view('mainDashboard');
     // }
+    public function createUser()
+    {
+        $employees = Employees::all();
+        $users =  User::count();
+        // dd($employees);
 
-    // public function createUser()
-    // {
-    //     $employees = Employees::all();
-        
-    //     // dd($employees);
-
-    //     return view('mainDashboard', compact('employees'));
+        return view('mainDashboard', compact('employees','users'));
 
      
-    //     // return view('registerTest');
-    //     // return "<h1>sample test</h1>";
-    // }
+        // return view('registerTest');
+        // return "<h1>sample test</h1>";
+    }
 
     public function saveUser(UserRequest $request)
     {
@@ -47,10 +47,13 @@ class AdminController extends Controller
         // dd($id);
         $employee = Employees::find($id);
 
-        if($employee){
+        if($employee)
+        {
             $employee->delete();
             return redirect()->back()->with('success','Deleted successfully!');
-        } else {
+        }
+         else 
+        {
             return redirect()->back()->with('error','Not Found!');
         }
     }
