@@ -9,6 +9,7 @@
  
 {{-- directive error if has error in procedural--}} 
 {{-- $message --predefine  --}}
+
 @error($name) 
     <p style="color: red">{{ $message}}</p>
 @enderror

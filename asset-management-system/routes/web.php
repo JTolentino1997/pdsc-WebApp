@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\Library;
+use App\Http\Controllers\LibraryController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,26 +28,27 @@ Route::middleware('auth')->group(function () {
     Route::name('library.')->prefix('library')->group(function(){
        
         //brand
-        Route::get('/brand', [Library::class, 'brandIndex'])->name('brand');
-        Route::post('/brand/create', [Library::class, 'createBrand'])->name('createBrand');
-        Route::delete('/brand/delete{id}',[Library::class, 'deleteBrand'])->name('deleteBrand');
-        Route::patch('/brand/update', [Library::class, 'updateBrand'])->name('updateBrand');
+        Route::get('/brand', [LibraryController::class, 'brandIndex'])->name('brand');
+        Route::post('/brand/create', [LibraryController::class, 'createBrand'])->name('createBrand');
+        Route::delete('/brand/delete{id}',[LibraryController::class, 'deleteBrand'])->name('deleteBrand');
+        Route::patch('/brand/update', [LibraryController::class, 'updateBrand'])->name('updateBrand');
 
         //department
-        Route::get('/department', [Library::class, 'departmentIndex'])->name('department');
-        Route::post('/department/create', [Library::class, 'createDepartment'])->name('createDepartment');
-        Route::delete('/department/delete{id}', [Library::class, 'deleteDepartment'])->name('deleteDepartment');
-        Route::patch('/department/update', [Library::class, 'updateDepartment'])->name('updateDepartment');
+        Route::get('/department', [LibraryController::class, 'departmentIndex'])->name('department');
+        Route::post('/department/create', [LibraryController::class, 'createDepartment'])->name('createDepartment');
+        Route::delete('/department/delete{id}', [LibraryController::class, 'deleteDepartment'])->name('deleteDepartment');
+        Route::patch('/department/update', [LibraryController::class, 'updateDepartment'])->name('updateDepartment');
 
         //user
-        Route::get('/user', [Library::class, 'createUser'])->name('createUser');
-        Route::post('/user/create', [Library::class, 'saveUser'])->name('saveUser');
-        Route::patch('/user/update', [Library::class, 'updateUser'])->name('updateUser');
-        Route::delete('/user/delete{id}', [Library::class, 'deleteUser'])->name('deleteUser');
+        Route::get('/user', [LibraryController::class, 'createUser'])->name('createUser');
+        Route::post('/user/create', [LibraryController::class, 'saveUser'])->name('saveUser');
+        Route::patch('/user/update', [LibraryController::class, 'updateUser'])->name('updateUser');
+        Route::delete('/user/delete{id}', [LibraryController::class, 'deleteUser'])->name('deleteUser');
 
         //supplier
-        Route::get('/supplier', [Library::class, 'supplierIndex'])->name('supplier');
-        Route::post('/supplier/create', [Library::class, 'CreateSupplier'])->name('createSupplier');
+        Route::get('/supplier', [LibraryController::class, 'supplierIndex'])->name('supplier');
+        Route::post('/supplier/create', [LibraryController::class, 'createSupplier'])->name('createSupplier');
+        Route::delete('/supplier/delete{id}', [LibraryController::class, 'deleteSupplier'])->name('deleteSupplier');
     });
     
     

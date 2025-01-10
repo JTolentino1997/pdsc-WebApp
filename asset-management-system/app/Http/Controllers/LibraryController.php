@@ -14,12 +14,9 @@ use App\Http\Requests\UserRequest;
 use App\Models\Departments;
 use App\Models\Suppliers;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 
-class Library extends Controller
+class LibraryController extends Controller
 {
-    
-
     #region Department ***************************************************************
         /**
          * Department Index
@@ -121,9 +118,6 @@ class Library extends Controller
     
     #endregion
  
-
-
-
     #region Brand******************************************************************************
         
         /**
@@ -229,9 +223,6 @@ class Library extends Controller
     
     #endregion**************************************************************************
 
-
-
-
     #region User ************************************************************************
 
         /**
@@ -326,23 +317,52 @@ class Library extends Controller
 
     #endregion ********************************************************************************
 
-
-    
     #region Supplier *********************************************************************
         public function supplierIndex()
         {
-            return view('library.supplier');
+            $suppliers = Suppliers::all();
+
+            return view('library.supplier', compact('suppliers'));
         }
 
-        public function CreateSupplier(StoreSupplierRequest $request)
+        public function createSupplier(StoreSupplierRequest $request)
         {
             $validatedRequest = $request->validated();
+            // dd($validatedRequest);
+            try {
+                
+                $duplicateSupp = Suppliers::where('name',$validatedRequest['name'])
+                                            ->exists();
 
-            $supplier = Suppliers::create($validatedRequest);
+                                            if($duplicateSupp)
+                                            {
+                                                return redirect()->back()->with('warning', 'Supplier name already exist. Please choose another name');
+                                            }
+                
+                $supplier = Suppliers::create($validatedRequest);
+
+                return redirect()->back()->with('success', 'You have successfully added new supplier');
+            } catch (\Throwable $th) {
+
+                return redirect()->back()->with('error' , $th);
+            }
             
-            
-            dd($validatedRequest);
-            
+        }
+
+        public function deleteSupplier($id)
+        {
+            // dd($id);
+            $supplier = Suppliers::find($id);
+
+            if($supplier)
+            {
+                $supplier->delete();
+                return redirect()->back()->with('success', 'delete successfully!');
+            }
+            else
+            {
+                return redirect()->back()->with('error', 'not found!');
+            }
         }
     #endregion  ***************************************************************************
 }
