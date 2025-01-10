@@ -25,7 +25,7 @@
 			<ul id="library" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
 				<li class="sidebar-item"><a href="{{ route('library.brand') }}" class="sidebar-link">Brands</a></li>
 				<li class="sidebar-item"><a href="{{ route('library.department' )}}" class="sidebar-link">Departments</a></li>
-				<li class="sidebar-item"><a href="#" class="sidebar-link">Suppliers</a></li>
+				<li class="sidebar-item"><a href="{{ route('library.supplier')}}" class="sidebar-link">Suppliers</a></li>
 				<li class="sidebar-item"><a href="#" class="sidebar-link">Users</a></li>
 		
 			</ul>

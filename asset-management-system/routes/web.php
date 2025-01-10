@@ -26,20 +26,28 @@ Route::middleware('auth')->group(function () {
 
     //Library
     Route::name('library.')->prefix('library')->group(function(){
+       
+        //brand
         Route::get('/brand', [Library::class, 'brandIndex'])->name('brand');
         Route::post('/brand/create', [Library::class, 'createBrand'])->name('createBrand');
-         
+        Route::delete('/brand/delete{id}',[Library::class, 'deleteBrand'])->name('deleteBrand');
+        Route::patch('/brand/update', [Library::class, 'updateBrand'])->name('updateBrand');
+
+        //department
         Route::get('/department', [Library::class, 'departmentIndex'])->name('department');
         Route::post('/department/create', [Library::class, 'createDepartment'])->name('createDepartment');
         Route::delete('/department/delete{id}', [Library::class, 'deleteDepartment'])->name('deleteDepartment');
+        Route::patch('/department/update', [Library::class, 'updateDepartment'])->name('updateDepartment');
 
+        //user
         Route::get('/user', [Library::class, 'createUser'])->name('createUser');
         Route::post('/user/create', [Library::class, 'saveUser'])->name('saveUser');
-    Route::patch('/user/update', [AdminController::class, 'updateUser'])->name('updateUser');
-
+        Route::patch('/user/update', [Library::class, 'updateUser'])->name('updateUser');
         Route::delete('/user/delete{id}', [Library::class, 'deleteUser'])->name('deleteUser');
 
-
+        //supplier
+        Route::get('/supplier', [Library::class, 'supplierIndex'])->name('supplier');
+        Route::post('/supplier/create', [Library::class, 'CreateSupplier'])->name('createSupplier');
     });
     
     
@@ -49,6 +57,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     
     Route::get('/logout', [AdminController::class, 'logout'])->name('logout');
+    // Route::patch('/user/update', [AdminController::class, 'updateUser'])->name('updateUser');
     
 });
 
