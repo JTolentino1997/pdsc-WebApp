@@ -196,7 +196,10 @@
                @csrf
                @method('PATCH') 
                 <input type="hidden" name="id" id="id">
+               
                 <x-form.input label="Supplier name" name="name" id="name" type="text"/>
+                <div id="name-error" class="text-danger"></div>
+
                 <x-form.input label="Address" name="address" id="address" type="text"/>
                 <x-form.input label="Contact number" name="contact" id="contactNum" type="text"/>
                 <x-form.input label="Email" name="email" id="email" type="text"/>
@@ -214,27 +217,72 @@
 
 
 <script>
-    document.addEventListener('DOMContentLoaded', function (){
-        var updateSupp = document.getElementById('updateSupplier');
+document.addEventListener('DOMContentLoaded', function () {
+    var updateSupp = document.getElementById('updateSupplier');
 
-        updateSupp.addEventListener('show.bs.modal', function(event) {
-            var button = event.relatedTarget;  
+    updateSupp.addEventListener('show.bs.modal', function (event) {
+        console.log('Modal is being shown');
+        
+        var button = event.relatedTarget;  
+        console.log('Button clicked:', button);
 
-            var targetId = button.getAttribute('data-supplier-id');
-            var targetName = button.getAttribute('data-supplier-name');
-            var targetAddress = button.getAttribute('data-supplier-address');
-            var targetContactNum = button.getAttribute('data-supplier-contactNumber');
-            var targetEmail = button.getAttribute('data-supplier-email');
-            var targetDesignation = button.getAttribute('data-supplier-designation');
-            
-            updateSupp.querySelector('#id').value = targetId;
-            updateSupp.querySelector('#name').value = targetName;
-            updateSupp.querySelector('#address').value = targetAddress;
-            updateSupp.querySelector('#contactNum').value = targetContactNum;
-            updateSupp.querySelector('#email').value = targetEmail;
-            updateSupp.querySelector('#designation').value = targetDesignation;
-        });
+        var targetId = button.getAttribute('data-supplier-id');
+        var targetName = button.getAttribute('data-supplier-name');
+        var targetAddress = button.getAttribute('data-supplier-address');
+        var targetContactNum = button.getAttribute('data-supplier-contactNumber');
+        var targetEmail = button.getAttribute('data-supplier-email');
+        var targetDesignation = button.getAttribute('data-supplier-designation');
+
+        console.log({ targetId, targetName, targetAddress, targetContactNum, targetEmail, targetDesignation });
+
+        updateSupp.querySelector('#id').value = targetId;
+        updateSupp.querySelector('#name').value = targetName;
+        updateSupp.querySelector('#address').value = targetAddress;
+        updateSupp.querySelector('#contactNum').value = targetContactNum;
+        updateSupp.querySelector('#email').value = targetEmail;
+        updateSupp.querySelector('#designation').value = targetDesignation;
     });
+
+    const form = document.querySelector('#updateSupplier form');
+
+    form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        console.log('Form submission intercepted');
+        const errors = validationForm();
+
+        if (Object.keys(errors).length > 0) {
+            console.log('Validation errors:', errors);
+            displayErrors(errors);
+        } else {
+            console.log('Form is valid, submitting');
+            form.submit();
+        }
+    });
+
+    function validationForm() {
+        const errors = {};
+        const name = document.getElementById('name').value.trim();
+        console.log('Validating name:', name);
+
+        if (!name) {
+            errors.name = "Supplier name is required!";
+        } else if (name.length > 255) {
+            errors.name = "Supplier name must not exceed 255 characters";
+        }
+
+        return errors;
+    }
+
+    function displayErrors(errors) {
+        document.querySelectorAll('.text-danger').forEach(el => el.textContent = '');
+
+        for (const field in errors) {
+            const errorElement = document.getElementById(`${field}-error`);
+            if (errorElement) errorElement.textContent = errors[field];
+        }
+    }
+});
+ 
 </script>
 
 {{-- modal EndUpdate --}}
