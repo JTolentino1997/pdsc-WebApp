@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class UpdateSupplierRequest extends FormRequest
 {
@@ -44,7 +45,7 @@ class UpdateSupplierRequest extends FormRequest
                 'email',
                 'required',
                 'max:255',
-                'unique:suppliers,email' . Request::get('id')
+                Rule::unique('suppliers','email')->ignore(Request::get('id')),
             ],
             'designation' => [
                 'string',

@@ -10,6 +10,7 @@ use App\Http\Requests\BrandRequest;
 use App\Http\Requests\StoreDepartmentRequest;
 use App\Http\Requests\UpdateDepartmentRequest;
 use App\Http\Requests\StoreSupplierRequest;
+use App\Http\Requests\UpdateSupplierRequest;
 use App\Http\Requests\UserRequest;
 use App\Models\Departments;
 use App\Models\Suppliers;
@@ -363,6 +364,11 @@ class LibraryController extends Controller
             {
                 return redirect()->back()->with('error', 'not found!');
             }
+        }
+
+        public function updateSupplier(UpdateSupplierRequest $request)
+        {
+            dd($request);
         }
     #endregion  ***************************************************************************
 }

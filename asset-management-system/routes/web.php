@@ -49,6 +49,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/supplier', [LibraryController::class, 'supplierIndex'])->name('supplier');
         Route::post('/supplier/create', [LibraryController::class, 'createSupplier'])->name('createSupplier');
         Route::delete('/supplier/delete{id}', [LibraryController::class, 'deleteSupplier'])->name('deleteSupplier');
+        Route::patch('/supplier/update', [LibraryController::class, 'updateSupplier'])->name('updateSupplier');
     });
     
     

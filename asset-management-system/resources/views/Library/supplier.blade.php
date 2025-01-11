@@ -41,13 +41,18 @@
                                             <td>{{ $supplier->email}}</td>
                                             <td>{{ $supplier->designation}}</td>
                                             <td>
-                                               <a href="">view</a>
+                                               <a href="#">view</a>
                                             </td>
                                             <td>
                                                 <button class="btn btn-primary"
                                                         data-bs-toggle="modal"
                                                         data-bs-target="#updateSupplier"
-                                                        data-supplier-id= {{ $supplier->id}}
+                                                        data-supplier-id= "{{ $supplier->id}}"
+                                                        data-supplier-name= "{{ $supplier->name}}"
+                                                        data-supplier-address= "{{ $supplier->address}}" 
+                                                        data-supplier-contactNumber= "{{ $supplier->contactNumber}}"
+                                                        data-supplier-email= "{{ $supplier->email }}"
+                                                        data-supplier-designation = "{{ $supplier->designation }}"
                                                         >Edit</button>
                                                 <form action="{{ route('library.deleteSupplier', $supplier->id) }}" method="POST" class="d-inline" >
                                                     @csrf
@@ -176,6 +181,7 @@
 </script>
 {{-- modal EndCreated --}}
 
+
 {{-- modal Update --}}
 
 <div class="modal fade" id="updateSupplier" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -186,28 +192,49 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form action="" method="POST" class="form-control">
+          <form action="{{ route('library.updateSupplier')}}" method="POST" class="form-control">
                @csrf
                @method('PATCH') 
                 <input type="hidden" name="id" id="id">
                 <x-form.input label="Supplier name" name="name" id="name" type="text"/>
+                <x-form.input label="Address" name="address" id="address" type="text"/>
+                <x-form.input label="Contact number" name="contact" id="contactNum" type="text"/>
+                <x-form.input label="Email" name="email" id="email" type="text"/>
+                <x-form.input label="Designation" name="designation" id="designation"/>
+
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <x-form.button label="Save Changes"/>
+                </div>
           </form>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
-          </div>
         </div>
       </div>
     </div>
   </div>
-{{-- modal EndUpdate --}}
+
 
 <script>
     document.addEventListener('DOMContentLoaded', function (){
         var updateSupp = document.getElementById('updateSupplier');
 
         updateSupp.addEventListener('show.bs.modal', function(event) {
-            var button event.relatedTarget;
+            var button = event.relatedTarget;  
+
+            var targetId = button.getAttribute('data-supplier-id');
+            var targetName = button.getAttribute('data-supplier-name');
+            var targetAddress = button.getAttribute('data-supplier-address');
+            var targetContactNum = button.getAttribute('data-supplier-contactNumber');
+            var targetEmail = button.getAttribute('data-supplier-email');
+            var targetDesignation = button.getAttribute('data-supplier-designation');
+            
+            updateSupp.querySelector('#id').value = targetId;
+            updateSupp.querySelector('#name').value = targetName;
+            updateSupp.querySelector('#address').value = targetAddress;
+            updateSupp.querySelector('#contactNum').value = targetContactNum;
+            updateSupp.querySelector('#email').value = targetEmail;
+            updateSupp.querySelector('#designation').value = targetDesignation;
         });
     });
 </script>
+
+{{-- modal EndUpdate --}}
