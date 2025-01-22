@@ -52,6 +52,7 @@
                                                         data-supplier-address= "{{ $supplier->address}}" 
                                                         data-supplier-contactNumber= "{{ $supplier->contactNumber}}"
                                                         data-supplier-email= "{{ $supplier->email }}"
+                                                        data-supplier-contactPerson= "{{ $supplier->contactPerson }}"
                                                         data-supplier-designation = "{{ $supplier->designation }}"
                                                         >Edit</button>
                                                 <form action="{{ route('library.deleteSupplier', $supplier->id) }}" method="POST" class="d-inline" >
@@ -91,7 +92,7 @@
                 <x-form.input label="Address" name="address" type="text" id="address" />
                 <div id="address-error" class="text-danger"></div>
                 
-                <x-form.input label="Contact No." name="contactNumber" type="number" id="contactNumber" />
+                <x-form.input label="Contact No." name="contactNumber" type="text" id="contactNumber" />
                 <div id="contactNumber-error" class="text-danger"></div>
                 
                 <x-form.input label="Contact Person" name="contactPerson" type="text" id="contactPerson" />
@@ -131,7 +132,7 @@
 
     function validateForm() {
         const errors = {};
-
+        
         const name = document.getElementById('name').value.trim();
         const address = document.getElementById('address').value.trim();
         const contactNumber = document.getElementById('contactNumber').value.trim();
@@ -139,39 +140,38 @@
         const email = document.getElementById('email').value.trim();
         const designation = document.getElementById('designation').value.trim();
 
-        // Name Validation
         if (!name) errors.name = "Supplier name is required.";
         else if (name.length > 255) errors.name = "Supplier name must not exceed 255 characters.";
 
-        // Address Validation (optional)
         if (!address) errors.address = "address name is required.";
         else if (address.length > 255) errors.address = "Address must not exceed 255 characters.";
 
-        // Contact Number Validation
         const contactNumberRegex = /^\+?[0-9]{1,15}$/;
         if (contactNumber && !contactNumberRegex.test(contactNumber)) {
             errors.contactNumber = "Contact number must be valid.";
         }
 
-        // Contact Person Validation (optional)
         if (contactPerson.length > 255) errors.contactPerson = "Contact person must not exceed 255 characters.";
 
-        // Email Validation
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!email) errors.email = "Email is required.";
-        else if (!emailRegex.test(email)) errors.email = "Email must be valid.";
 
-        // Designation Validation (optional)
+        if (!email) 
+        {
+            errors.email = "Email is required.";
+        }
+        else if (!emailRegex.test(email))
+        {
+            errors.email = "Email must be valid.";
+        }
+
         if (designation.length > 255) errors.designation = "Designation must not exceed 255 characters.";
 
         return errors;
     }
 
     function displayErrors(errors) {
-        // I-clear ang lahat ng error messages
         document.querySelectorAll('.text-danger').forEach(el => el.textContent = '');
 
-        // Ipakita ang bagong errors
         for (const field in errors) {
             const errorElement = document.getElementById(`${field}-error`);
             if (errorElement) errorElement.textContent = errors[field];
@@ -197,13 +197,19 @@
                @method('PATCH') 
                 <input type="hidden" name="id" id="id">
                
-                <x-form.input label="Supplier name" name="name" id="name" type="text"/>
-                <div id="name-error" class="text-danger"></div>
+                <x-form.input label="Supplier Name" name="name" type="text" id="nameId" />
+                <div id="name-updateError" class="text-danger"></div>
 
-                <x-form.input label="Address" name="address" id="address" type="text"/>
-                <x-form.input label="Contact number" name="contact" id="contactNum" type="text"/>
-                <x-form.input label="Email" name="email" id="email" type="text"/>
-                <x-form.input label="Designation" name="designation" id="designation"/>
+                <x-form.input label="Address" name="address" id="addressId" type="text"/>
+
+                <x-form.input label="Contact number" name="contactNumber" id="contactNumId" type="text"/>
+                <div id="contactNumber-updateError" class="text-danger"></div>
+
+                <x-form.input label="Contact Person" name="contactPerson" id="contactPersonId" type="text"/>
+
+                <x-form.input label="Email" name="email" id="emailId" type="text"/>
+
+                <x-form.input label="Designation" name="designation" id="designationId"/>
 
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -221,10 +227,8 @@ document.addEventListener('DOMContentLoaded', function () {
     var updateSupp = document.getElementById('updateSupplier');
 
     updateSupp.addEventListener('show.bs.modal', function (event) {
-        console.log('Modal is being shown');
-        
+
         var button = event.relatedTarget;  
-        console.log('Button clicked:', button);
 
         var targetId = button.getAttribute('data-supplier-id');
         var targetName = button.getAttribute('data-supplier-name');
@@ -232,28 +236,30 @@ document.addEventListener('DOMContentLoaded', function () {
         var targetContactNum = button.getAttribute('data-supplier-contactNumber');
         var targetEmail = button.getAttribute('data-supplier-email');
         var targetDesignation = button.getAttribute('data-supplier-designation');
-
-        console.log({ targetId, targetName, targetAddress, targetContactNum, targetEmail, targetDesignation });
+        var targetContactPerson = button.getAttribute('data-supplier-contactPerson');
 
         updateSupp.querySelector('#id').value = targetId;
-        updateSupp.querySelector('#name').value = targetName;
-        updateSupp.querySelector('#address').value = targetAddress;
-        updateSupp.querySelector('#contactNum').value = targetContactNum;
-        updateSupp.querySelector('#email').value = targetEmail;
-        updateSupp.querySelector('#designation').value = targetDesignation;
+        updateSupp.querySelector('#nameId').value = targetName;
+        updateSupp.querySelector('#addressId').value = targetAddress;
+        updateSupp.querySelector('#contactNumId').value = targetContactNum;
+        updateSupp.querySelector('#emailId').value = targetEmail;
+        updateSupp.querySelector('#designationId').value = targetDesignation;
+        updateSupp.querySelector('#contactPersonId').value = targetContactPerson;
     });
 
     const form = document.querySelector('#updateSupplier form');
 
     form.addEventListener('submit', function (event) {
         event.preventDefault();
-        console.log('Form submission intercepted');
+
         const errors = validationForm();
 
-        if (Object.keys(errors).length > 0) {
-            console.log('Validation errors:', errors);
+        if (Object.keys(errors).length > 0) 
+        {
             displayErrors(errors);
-        } else {
+        }
+        else 
+        {
             console.log('Form is valid, submitting');
             form.submit();
         }
@@ -261,14 +267,27 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function validationForm() {
         const errors = {};
-        const name = document.getElementById('name').value.trim();
-        console.log('Validating name:', name);
 
-        if (!name) {
+        const mobileRegex = /^(?:\+63|63|0)9\d{9}$/;
+        const landlineRegex = /^(?:\+63|63|0)(2|[3-9]\d{1})\d{7}$/;
+
+        const name = document.getElementById('nameId').value.trim();
+        const contactNum = document.getElementById('contactNumId').value.trim();
+
+        if (!name) 
+        {
             errors.name = "Supplier name is required!";
-        } else if (name.length > 255) {
+        } 
+        else if (name.length > 255) 
+        {
             errors.name = "Supplier name must not exceed 255 characters";
         }
+
+        if(!contactNum)
+        {
+            errors.contactNumber = "Contact number is required";
+        }
+
 
         return errors;
     }
@@ -277,10 +296,20 @@ document.addEventListener('DOMContentLoaded', function () {
         document.querySelectorAll('.text-danger').forEach(el => el.textContent = '');
 
         for (const field in errors) {
-            const errorElement = document.getElementById(`${field}-error`);
-            if (errorElement) errorElement.textContent = errors[field];
+
+            const errorElement = document.getElementById(`${field}-updateError`);
+            
+            if (errorElement) 
+            {
+                errorElement.textContent = errors[field];
+            } 
+            else 
+            {
+                console.warn(`No error element found for field: ${field}`);
+            }
         }
     }
+
 });
  
 </script>

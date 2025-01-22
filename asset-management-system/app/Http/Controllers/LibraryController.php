@@ -15,6 +15,10 @@ use App\Http\Requests\UserRequest;
 use App\Models\Departments;
 use App\Models\Suppliers;
 use Illuminate\Http\Request;
+use App\Helpers\GlobalHelper;
+use App\Http\Requests\StoreItemRequest;
+use App\Models\Categories;
+use App\Models\Items;
 
 class LibraryController extends Controller
 {
@@ -329,20 +333,20 @@ class LibraryController extends Controller
         public function createSupplier(StoreSupplierRequest $request)
         {
             $validatedRequest = $request->validated();
-            // dd($validatedRequest);
             try {
                 
                 $duplicateSupp = Suppliers::where('name',$validatedRequest['name'])
                                             ->exists();
 
-                                            if($duplicateSupp)
-                                            {
-                                                return redirect()->back()->with('warning', 'Supplier name already exist. Please choose another name');
-                                            }
+                if($duplicateSupp)
+                {
+                    return redirect()->back()->with('warning', 'Supplier name already exist. Please choose another name');
+                }
                 
                 $supplier = Suppliers::create($validatedRequest);
 
                 return redirect()->back()->with('success', 'You have successfully added new supplier');
+
             } catch (\Throwable $th) {
 
                 return redirect()->back()->with('error' , $th);
@@ -368,7 +372,47 @@ class LibraryController extends Controller
 
         public function updateSupplier(UpdateSupplierRequest $request)
         {
-            dd($request);
+            
+            $validatedRequest = $request->validated();
+
+            // dd($validatedRequest);
+
+            $supplier = Suppliers::find($request->id);
+
+
+            if(!$supplier)
+            {
+                return redirect()->back()->with("error", 'Not found');
+            }
+
+
+            $supplier->name = $validatedRequest['name'];
+            $supplier->address = $validatedRequest['address'];
+            $supplier->contactNumber = $validatedRequest['contactNumber'];
+            $supplier->contactPerson = $validatedRequest['contactPerson'];
+            $supplier->email = $validatedRequest['email'];
+            $supplier->designation = $validatedRequest['designation'];
+
+            $supplier->save();
+
+            return redirect()->back()->with('success', 'You have successfully update!');
+
         }
     #endregion  ***************************************************************************
+
+    #region Item
+        public function itemIndex()
+        { 
+            return view('library.item', ['categories' => Categories::all()]);
+        }
+
+        public function createItem(StoreItemRequest $request)
+        {
+            // dd($request);
+            $validatedRequest = $request->validated();
+
+            dd($validatedRequest);
+        }
+
+    #endregion
 }

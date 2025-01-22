@@ -3,11 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rule;
 
-class UpdateSupplierRequest extends FormRequest
+class StoreItemRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -16,6 +14,7 @@ class UpdateSupplierRequest extends FormRequest
     {
         // return false;
         return Auth::check();
+
     }
 
     /**
@@ -26,36 +25,39 @@ class UpdateSupplierRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => [
-                'string',
+            'assetName' => [
                 'required',
-                'max:255',
-            ],
-            'address' => [
                 'string',
                 'max:255',
-                'nullable'
             ],
-            'contactNumber' => [
+            'code' => [
                 'string',
-                // 'regex:/^\+?[0-9]{1,15}$/', // Allows an optional '+' followed by up to 15 digits.
+                'max:255',
+                'required'
+            ],
+            'hasExpiry' => [
+                'boolean',
+            ],
+            'hasSerial' => [
+                'boolean',
+            ],
+            'desc' => [
+                'string',
                 'max:255'
             ],
-            'contactPerson' =>[
-                'string',
-                'max:255',
-                'nullable'
+            'fixAsset' => [
+                'boolean',
             ],
-            'email' => [
-                'email',
+            'pms' => [
+                'boolean',
+            ],
+            'calibration' => [
+                'boolean'
+            ],
+            'uom_id' => [
                 'required',
-                'max:255',
-                Rule::unique('suppliers','email')->ignore(Request::get('id')),
-            ],
-            'designation' => [
-                'string',
-                'nullable',
-                'max:255'
+                'integer',
+                'existing:uom,id'
             ]
         ];
     }

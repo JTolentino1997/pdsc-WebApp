@@ -36,7 +36,9 @@ class StoreSupplierRequest extends FormRequest
             ],
             'contactNumber' => [
                 'nullable',
-                'regex:/^\+?[0-9]{1,15}$/', // Allows an optional '+' followed by up to 15 digits.
+                'string',
+                // 'numeric',
+                // 'regex:/^\+?[0-9]{1,15}$/', // Allows an optional '+' followed by up to 15 digits.
                 'max:255',
             ],
             'contactPerson' => [

@@ -5,6 +5,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LibraryController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use PharIo\Manifest\Library;
 
 Route::get('/', function () {
     return view('welcome');
@@ -22,8 +23,7 @@ Route::middleware('auth')->group(function () {
 
     //Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    
-
+     
     //Library
     Route::name('library.')->prefix('library')->group(function(){
        
@@ -50,6 +50,10 @@ Route::middleware('auth')->group(function () {
         Route::post('/supplier/create', [LibraryController::class, 'createSupplier'])->name('createSupplier');
         Route::delete('/supplier/delete{id}', [LibraryController::class, 'deleteSupplier'])->name('deleteSupplier');
         Route::patch('/supplier/update', [LibraryController::class, 'updateSupplier'])->name('updateSupplier');
+
+        //item
+        Route::get('/item', [LibraryController::class, 'itemIndex'])->name('item');
+        Route::post('/item/create', [LibraryController::class, 'createItem'])->name('createItem');
     });
     
     
