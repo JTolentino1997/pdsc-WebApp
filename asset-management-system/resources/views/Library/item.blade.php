@@ -34,19 +34,33 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
+                                          @foreach ($items as $item)
+                                          <tr>
+                                            <td>{{ $loop->iteration}}</td>
+                                            <td>{{ $item->assetName}}</td>
+                                            <td>{{ $item->uoms->name ?? 'N/A'}}</td>
+                                            {{-- <td>Category</td> --}}
+                                            <td>{{ $item->hasSerial ? 'Yes' : 'No'}}</td>
+                                            <td>{{ $item->hasExpiry?  'Yes' : 'No'}}</td>
+                                            <td>{{ $item->fixAsset ?  'Yes' : 'No'}}</td>
+                                            <td>{{ $item->pms ?  'Yes' : 'No'}}</td>
+                                            <td>{{ $item->calibration ?  'Yes' : 'No'}}</td>
+                                            <td>{{ $item->desc ?  'Yes' : 'No'}}</td>
+                                            
                                             <td>
-                                               <a href="#">view</a>
-                                            </td>
-                                            <td>
-                                              <button></button>
-                                                <form action="" method="POST" class="d-inline" >
+                                              <button class="btn btn-primary">Update</button>
+
+                                                <form action="{{ route('library.deleteItem', $item->id) }}" method="POST" class="d-inline" >
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button class="btn btn-danger">Delete</button>
+                                                    <button class="btn btn-danger" onclick="return confirm('are you sure you want to delete {{ $item->assetName}}?')">Delete</button>
                                                 </form>
                                             </td>
-                                        </tr>
+                                          </tr>
+                                          @endforeach
+                                          
+
+                                       
                                     </tbody>
                                 </table>
                             </div>
@@ -69,6 +83,7 @@
         <div class="modal-body">
           <form action="{{ route('library.createItem') }}" method="POST" class="form-control">
             @csrf
+
             <x-form.input label="Name" name="assetName" id="assetName" type="text" />
            
             {{-- <div class="form-group my-2">
@@ -82,7 +97,7 @@
 
             <x-form.input label="Code" name="code"  id="code" type="text"/>
 
-            <x-form.input label="uom_id" name="uom_id" type="number" id="uom_id" />
+            <x-form.input label="Unit of Measures" name="uom_id" type="number" id="uom_id"/>
 
            <div class="container d-flex justify-content-center align-items-center">
                 <div class="row">
@@ -131,3 +146,5 @@
       </div>
     </div>
   </div>
+
+ 

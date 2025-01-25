@@ -9,17 +9,17 @@ class Items extends Model
     protected $fillable = [
         'assetName',
         'code',
-        'hasExpiry',
-        'hasSerial',
-        'desc',
         'uom_id',
+        'hasSerial',
+        'hasExpiry',
         'fixAsset',
         'pms',
-        'calibration',
+        'calibration', 
+        'desc',
     ]; 
 
-    public function uom()
+    public function uoms()
     {
-        return $this->belongsTo(Uom::class, 'uom_id');
+        return $this->belongsTo(Uoms::class, 'uom_id' );
     }
 }

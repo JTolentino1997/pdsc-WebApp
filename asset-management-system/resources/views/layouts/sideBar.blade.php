@@ -27,6 +27,7 @@
 				<li class="sidebar-item"><a href="{{ route('library.department' )}}" class="sidebar-link">Departments</a></li>
 				<li class="sidebar-item"><a href="{{ route('library.supplier')}}" class="sidebar-link">Suppliers</a></li>
 				<li class="sidebar-item"><a href="{{ route('library.item')}}" class="sidebar-link">Items</a></li>
+				<li class="sidebar-item"><a href="{{ route('library.category')}}" class="sidebar-link">Category</a></li>
 				<li class="sidebar-item"><a href="#" class="sidebar-link">Users</a></li>
 			</ul>
 	   </li>

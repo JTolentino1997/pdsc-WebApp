@@ -54,6 +54,13 @@ Route::middleware('auth')->group(function () {
         //item
         Route::get('/item', [LibraryController::class, 'itemIndex'])->name('item');
         Route::post('/item/create', [LibraryController::class, 'createItem'])->name('createItem');
+        Route::delete('/item/delete{id}',[LibraryController::class, 'deleteItem'])->name('deleteItem');
+
+
+        //category
+        Route::get('/category', [LibraryController::class, 'categoryIndex'])->name('category');
+        Route::post('/category/store', [LibraryController:: class, 'storeCategory'])->name('storeCategory');
+        
     });
     
     

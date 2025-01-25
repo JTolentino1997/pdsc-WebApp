@@ -58,7 +58,7 @@
                                                 <form action="{{ route('library.deleteSupplier', $supplier->id) }}" method="POST" class="d-inline" >
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button class="btn btn-danger" onclick="return confirm('are you sure you want to delete {{ $supplier->name}}')">Delete</button>
+                                                    <button class="btn btn-danger" onclick="return confirm('are you sure you want to delete {{ $supplier->name}}?')">Delete</button>
                                                 </form>
                                             </td>
                                         </tr>

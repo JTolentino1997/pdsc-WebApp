@@ -19,6 +19,7 @@ use App\Helpers\GlobalHelper;
 use App\Http\Requests\StoreItemRequest;
 use App\Models\Categories;
 use App\Models\Items;
+use App\Models\Uoms;
 
 class LibraryController extends Controller
 {
@@ -402,17 +403,50 @@ class LibraryController extends Controller
 
     #region Item
         public function itemIndex()
-        { 
-            return view('library.item', ['categories' => Categories::all()]);
+        {
+         
+            $items = Items::with('uoms')->get();
+
+            return view('library.item', compact('items'));
+
+            // $items = Uoms::all();
+
+            // dd($items);
         }
 
         public function createItem(StoreItemRequest $request)
         {
-            // dd($request);
+            //  dd($request);
             $validatedRequest = $request->validated();
+            // dd($validatedRequest);
 
-            dd($validatedRequest);
+            $item = Items::create($validatedRequest);
+ 
+            return redirect()->back()->with('success', 'You have add new item successfully!');
+ 
+        }
+
+        public function deleteItem($id)
+        {
+            $item = Items::find($id);
+            
+            if(!$item)
+            {
+                return redirect()->back()->with('error', 'Not Found!');
+            }
+            
+            return redirect()->back()->with('success', 'You have deleted an item');
+            $item->delete();
+
+
         }
 
     #endregion
+
+    #region Category
+    public function categoryIndex()
+    {
+        return view('library.category');
+    }
+    #endregion 
 }

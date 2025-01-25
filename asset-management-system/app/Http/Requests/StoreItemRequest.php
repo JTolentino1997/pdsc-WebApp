@@ -35,15 +35,20 @@ class StoreItemRequest extends FormRequest
                 'max:255',
                 'required'
             ],
+            'uom_id' => [
+                'required',
+                'integer',
+                'exists:uoms,id'
+            ],
+             'desc' => [
+                'string',
+                'max:255'
+            ],
             'hasExpiry' => [
                 'boolean',
             ],
             'hasSerial' => [
                 'boolean',
-            ],
-            'desc' => [
-                'string',
-                'max:255'
             ],
             'fixAsset' => [
                 'boolean',
@@ -54,11 +59,7 @@ class StoreItemRequest extends FormRequest
             'calibration' => [
                 'boolean'
             ],
-            'uom_id' => [
-                'required',
-                'integer',
-                'existing:uom,id'
-            ]
+  
         ];
     }
 }
