@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('desc');
     
             $table->unsignedBigInteger('uom_id')->nullable(); // Foreign key column
+            
             $table->index('uom_id'); // Index to improve foreign key performance
             $table->foreign('uom_id') // Define the foreign key constraint
                   ->references('id')

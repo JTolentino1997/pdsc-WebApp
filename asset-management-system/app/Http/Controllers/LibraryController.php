@@ -20,6 +20,7 @@ use App\Http\Requests\StoreItemRequest;
 use App\Models\Categories;
 use App\Models\Items;
 use App\Models\Uoms;
+use PhpParser\Node\Stmt\TryCatch;
 
 class LibraryController extends Controller
 {
@@ -404,21 +405,15 @@ class LibraryController extends Controller
     #region Item
         public function itemIndex()
         {
-         
             $items = Items::with('uoms')->get();
 
-            return view('library.item', compact('items'));
-
-            // $items = Uoms::all();
-
-            // dd($items);
+            $categories = GlobalHelper::getCategories();
+            return view('library.item', compact('items'), ['categories' => $categories]);
         }
 
         public function createItem(StoreItemRequest $request)
         {
-            //  dd($request);
             $validatedRequest = $request->validated();
-            // dd($validatedRequest);
 
             $item = Items::create($validatedRequest);
  
@@ -446,7 +441,87 @@ class LibraryController extends Controller
     #region Category
     public function categoryIndex()
     {
-        return view('library.category');
+        $categories = GlobalHelper::getCategories();
+
+        return view('library.category', ['categories' => $categories ]);
+    }
+
+    public function storeCategory(Request $request)
+    {
+
+       $validatedRequest = $request->validate([
+        'name' => ['required','string','max:255'],
+        'desc' => ['required','string','max:255']
+       ]);
+
+        try {
+
+         
+            $isDuplicate = Categories::where('name', $validatedRequest['name'])->exists();
+
+            if($isDuplicate)
+            {
+                return redirect()->back()->with('warning', 'The category name already exists. Please choose another name!');
+            }
+
+            $category = Categories::create([
+                'name' => $validatedRequest['name'],
+                'desc' => $validatedRequest['desc']
+            ]);
+
+            return redirect()->back()->with('success', 'You have successfully added new category!');
+        } 
+        catch (\Throwable $th) 
+        {
+            return redirect()->back()->with('error', $th);
+        }
+    }
+
+    public function deleteCategory($id)
+    {
+        $isCategoryExist = Categories::find($id);
+        
+        if(!$isCategoryExist)
+        {
+            return redirect()->back()->with('error', 'Not found');
+        }
+
+        $isCategoryExist->delete();
+        return redirect()->back()->with('success', 'Delete successfully!');
+    }
+
+    public function updateCategory(Request $request)
+    {
+        $validatedRequest = $request->validate([
+            'id' => ['required','exists:categories,id'],
+            'name' => ['string','max:255','required'],
+            'desc' => ['string', 'max:255', 'required']
+        ]);
+
+
+        try {
+            $isDuplicate = Categories::where('name', $validatedRequest['name'])
+                                    ->where('id', '!=', $validatedRequest['id'])
+                                    ->exists();
+
+            if($isDuplicate)
+            {
+                return redirect()->back()->with('warning', 'The Category name already exists. Please choose another name');
+            }
+
+            $category = Categories::findOrFail($validatedRequest['id']);
+
+            $category->name = $validatedRequest['name'];
+            $category->desc = $validatedRequest['desc'];
+
+            $category->save();
+
+            return redirect()->back()->with('success', 'You have successfully update');
+        } catch (\Throwable $th) {
+            //throw $th;
+
+            return redirect()->back()->with('error',' not found!');
+        }
     }
     #endregion 
 }

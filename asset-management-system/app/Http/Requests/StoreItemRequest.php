@@ -40,6 +40,11 @@ class StoreItemRequest extends FormRequest
                 'integer',
                 'exists:uoms,id'
             ],
+            'category_id' => [
+                'required',
+                'integer',
+                'exists:categories,id'
+            ],
              'desc' => [
                 'string',
                 'max:255'

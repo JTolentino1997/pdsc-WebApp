@@ -16,10 +16,16 @@ class Items extends Model
         'pms',
         'calibration', 
         'desc',
+        'category_id'
     ]; 
 
     public function uoms()
     {
         return $this->belongsTo(Uoms::class, 'uom_id' );
+    }
+
+    public function categories()
+    {
+        return $this->belongsTo(categories::class, 'category_id');
     }
 }

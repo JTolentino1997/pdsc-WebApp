@@ -39,13 +39,13 @@
                                             <td>{{ $loop->iteration}}</td>
                                             <td>{{ $item->assetName}}</td>
                                             <td>{{ $item->uoms->name ?? 'N/A'}}</td>
-                                            {{-- <td>Category</td> --}}
+                                            <td>{{ $item->categories->name ?? 'N/A'}}</td>
                                             <td>{{ $item->hasSerial ? 'Yes' : 'No'}}</td>
                                             <td>{{ $item->hasExpiry?  'Yes' : 'No'}}</td>
                                             <td>{{ $item->fixAsset ?  'Yes' : 'No'}}</td>
                                             <td>{{ $item->pms ?  'Yes' : 'No'}}</td>
                                             <td>{{ $item->calibration ?  'Yes' : 'No'}}</td>
-                                            <td>{{ $item->desc ?  'Yes' : 'No'}}</td>
+                                            <td>{{ $item->desc }}</td>
                                             
                                             <td>
                                               <button class="btn btn-primary">Update</button>
@@ -59,8 +59,6 @@
                                           </tr>
                                           @endforeach
                                           
-
-                                       
                                     </tbody>
                                 </table>
                             </div>
@@ -86,14 +84,14 @@
 
             <x-form.input label="Name" name="assetName" id="assetName" type="text" />
            
-            {{-- <div class="form-group my-2">
-                <label for="category">Category: </label>
-                <select class="form-control" id="category">
+            <div class="form-group my-2">
+                <label for="category">Category:</label>
+                <select class="form-control" name="category_id" id="category">
                     @foreach($categories as $category)
-                        <option value="{{ $category->id }}" name="code"> {{ $category->name}} </option> 
+                        <option value="{{ $category->id }}"> {{ $category->name}} </option> 
                     @endforeach
                 </select>
-            </div> --}}
+            </div>
 
             <x-form.input label="Code" name="code"  id="code" type="text"/>
 

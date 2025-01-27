@@ -59,8 +59,9 @@ Route::middleware('auth')->group(function () {
 
         //category
         Route::get('/category', [LibraryController::class, 'categoryIndex'])->name('category');
-        Route::post('/category/store', [LibraryController:: class, 'storeCategory'])->name('storeCategory');
-        
+        Route::post('/category/store', [LibraryController::class, 'storeCategory'])->name('storeCategory');
+        Route::delete('/category/delete{id}', [LibraryController::class, 'deleteCategory'])->name('deleteCategory');
+        Route::patch('category/update', [LibraryController::class, 'updateCategory'])->name('updateCategory');
     });
     
     
