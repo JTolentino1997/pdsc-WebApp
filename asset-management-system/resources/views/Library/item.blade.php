@@ -95,7 +95,15 @@
 
             <x-form.input label="Code" name="code"  id="code" type="text"/>
 
-            <x-form.input label="Unit of Measures" name="uom_id" type="number" id="uom_id"/>
+            <div class="form-group my-2">
+              <label for="UnitOfMeasures">Unit of Measures</label>
+              <select class="form-control" name="uom_id" id="unitOfMeasures">
+                @foreach ($Uoms as $Uom)
+                  <option value="{{ $Uom->id }}">{{ $Uom->name }}</option>
+                @endforeach
+              </select>
+            </div>
+            {{-- <x-form.input label="Unit of Measures" name="uom_id" type="number" id="uom_id"/> --}}
 
            <div class="container d-flex justify-content-center align-items-center">
                 <div class="row">
@@ -137,7 +145,7 @@
             <br>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <x-form.button label="save Changes"/>
+              <x-form.button label="Save Changes"/>
             </div>
           </form>
         </div>

@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use App\Models\Categories;
 use App\Models\Employees;
+use App\Models\Uoms;
 
 class GlobalHelper
 {
@@ -19,4 +20,11 @@ class GlobalHelper
     {
        return Categories::all();
     }
+
+    public static function getUnitOfMeasure()
+    {
+        return Uoms::all();
+    }
+
+  
 }

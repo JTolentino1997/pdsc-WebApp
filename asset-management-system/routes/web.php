@@ -61,7 +61,13 @@ Route::middleware('auth')->group(function () {
         Route::get('/category', [LibraryController::class, 'categoryIndex'])->name('category');
         Route::post('/category/store', [LibraryController::class, 'storeCategory'])->name('storeCategory');
         Route::delete('/category/delete{id}', [LibraryController::class, 'deleteCategory'])->name('deleteCategory');
-        Route::patch('category/update', [LibraryController::class, 'updateCategory'])->name('updateCategory');
+        Route::patch('/category/update', [LibraryController::class, 'updateCategory'])->name('updateCategory');
+
+        //Unit of measures
+        Route::get('/unitOfMeasure', [LibraryController::class, 'unitOfMeasureIndex'])->name('unitOfMeasure');
+        Route::post('/unitOfMeasure/store', [LibraryController::class, 'storeUnitOfMeasure'])->name('storeUnitOfMeasure');
+        Route::delete('/unitOfMeasure/delete{id}', [LibraryController::class, 'deleteUnitOfMeasure'])->name('deleteUnitOfMeasure');
+        Route::patch('/unitOfMeasure/update', [LibraryController::class, 'updateUnitOfMeasure'])->name('updateUnitOfMeasure');
     });
     
     

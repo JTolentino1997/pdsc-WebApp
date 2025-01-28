@@ -287,6 +287,10 @@ document.addEventListener('DOMContentLoaded', function () {
         {
             errors.contactNumber = "Contact number is required";
         }
+        else if (contactNum.length > 255) 
+        {
+            errors.name = "Contact name must not exceed 255 characters";
+        }
 
 
         return errors;

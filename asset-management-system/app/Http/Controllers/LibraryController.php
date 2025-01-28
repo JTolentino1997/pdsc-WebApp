@@ -406,9 +406,10 @@ class LibraryController extends Controller
         public function itemIndex()
         {
             $items = Items::with('uoms')->get();
-
             $categories = GlobalHelper::getCategories();
-            return view('library.item', compact('items'), ['categories' => $categories]);
+            $Uoms = GlobalHelper::getUnitOfMeasure();
+
+            return view('library.item', compact('items', 'categories' ,'Uoms'));
         }
 
         public function createItem(StoreItemRequest $request)
@@ -423,6 +424,7 @@ class LibraryController extends Controller
 
         public function deleteItem($id)
         {
+           
             $item = Items::find($id);
             
             if(!$item)
@@ -430,10 +432,8 @@ class LibraryController extends Controller
                 return redirect()->back()->with('error', 'Not Found!');
             }
             
-            return redirect()->back()->with('success', 'You have deleted an item');
             $item->delete();
-
-
+            return redirect()->back()->with('success', 'You have deleted an item');
         }
 
     #endregion
@@ -455,7 +455,6 @@ class LibraryController extends Controller
        ]);
 
         try {
-
          
             $isDuplicate = Categories::where('name', $validatedRequest['name'])->exists();
 
@@ -522,6 +521,89 @@ class LibraryController extends Controller
 
             return redirect()->back()->with('error',' not found!');
         }
+    }
+    #endregion 
+
+    #region UnitOfMeasure
+    public function unitOfMeasureIndex()
+    {
+        $Uoms = GlobalHelper::getUnitOfMeasure();
+
+        return view('library.unitOfMeasure', compact('Uoms'));
+    }
+
+    public function storeUnitOfMeasure(Request $request)
+    {
+        $validatedRequest = $request->validate([
+            'name' => ['required','string','max:255'],
+            'desc' => ['required', 'string', 'max:255']
+        ]);
+
+        try {
+            $isDuplicate = Uoms::where('name', $validatedRequest['name'])->exists();
+
+            if($isDuplicate)
+            {
+                return redirect()->back()->with('error','Unit name already exists. Please choose another name!');
+            }
+
+            $unitOfMeasure = Uoms::create([
+                'name' => $validatedRequest['name'],
+                'desc' =>$validatedRequest['desc']
+            ]);
+
+            return redirect()->back()->with('success',  'You have successfully added new UOM!');
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+    }
+
+    public function deleteUnitOfMeasure($id)
+    {
+        $isUomExist = Uoms::find($id);
+
+        if(!$isUomExist)
+        {
+            return redirect()->back()->with('error', 'Not found!');
+        }
+
+        $isUomExist->delete();
+        return redirect()->back()->with('success', 'Delete successfully!');
+    }
+
+    public function updateUnitOfMeasure(Request $request)
+    {
+        $validatedRequest = $request->validate([
+            'id' => ['required','exists:Uoms,id'],
+            'name' => ['required', 'max:255', 'string'],
+            'desc' => ['required', 'max:255', 'string']
+        ]);
+
+        try {
+
+            $isDuplicate = Uoms::where('name', $validatedRequest['name'])
+                                ->where('id' ,'!=',  $validatedRequest['id'])
+                                ->exists();
+
+            if($isDuplicate)
+            {
+                return redirect()->back()->with('error', 'The name is already taken. Please choose another name!');
+            }
+
+            $measurement = Uoms::findOrFail($validatedRequest['id']);
+
+            $measurement->name = $validatedRequest['name'];
+            $measurement->desc = $validatedRequest['desc'];
+            $measurement->save();
+
+            return redirect()->back()->with('success', 'You have successfully update');
+        } 
+        catch (\Throwable $th) 
+        {
+
+            return redirect()->back()->with('error',' not found!');
+        }
+ 
     }
     #endregion 
 }

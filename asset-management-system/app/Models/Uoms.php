@@ -18,7 +18,7 @@ class Uoms extends Model
     //     return $this->hasMany(Items::class, 'uom_id');
     // }
 
-      public function items()
+    public function items()
     {
         return $this->hasMany(Items::class, 'uom_id');
     }
