@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Items extends Model
 {
     protected $fillable = [
-        'assetName',
+        'name',
         'code',
         'uom_id',
         'hasSerial',

@@ -38,7 +38,7 @@ class UpdateSupplierRequest extends FormRequest
             ],
             'contactNumber' => [
                 'string',
-                // 'regex:/^\+?[0-9]{1,15}$/', // Allows an optional '+' followed by up to 15 digits.
+                'required',
                 'max:255'
             ],
             'contactPerson' =>[

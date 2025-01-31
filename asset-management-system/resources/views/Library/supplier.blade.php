@@ -92,8 +92,8 @@
                 <x-form.input label="Address" name="address" type="text" id="address" />
                 <div id="address-error" class="text-danger"></div>
                 
-                <x-form.input label="Contact No." name="contactNumber" type="text" id="contactNumber" />
-                <div id="contactNumber-error" class="text-danger"></div>
+                <x-form.input label="Contact No." name="contactNumber" type="number" id="contactNumber"  />
+                <div id="contactNumber-error" class="text-danger">ex.9758340651</div>
                 
                 <x-form.input label="Contact Person" name="contactPerson" type="text" id="contactPerson" />
                 <div id="contactPerson-error" class="text-danger"></div>
@@ -146,10 +146,12 @@
         if (!address) errors.address = "address name is required.";
         else if (address.length > 255) errors.address = "Address must not exceed 255 characters.";
 
+
         const contactNumberRegex = /^\+?[0-9]{1,15}$/;
         if (contactNumber && !contactNumberRegex.test(contactNumber)) {
             errors.contactNumber = "Contact number must be valid.";
         }
+ 
 
         if (contactPerson.length > 255) errors.contactPerson = "Contact person must not exceed 255 characters.";
 
@@ -202,7 +204,7 @@
 
                 <x-form.input label="Address" name="address" id="addressId" type="text"/>
 
-                <x-form.input label="Contact number" name="contactNumber" id="contactNumId" type="text"/>
+                <x-form.input label="Contact number" name="contactNumber" id="contactNumId" type="number"/>
                 <div id="contactNumber-updateError" class="text-danger"></div>
 
                 <x-form.input label="Contact Person" name="contactPerson" id="contactPersonId" type="text"/>

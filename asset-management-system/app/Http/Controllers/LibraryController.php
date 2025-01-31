@@ -335,6 +335,7 @@ class LibraryController extends Controller
         public function createSupplier(StoreSupplierRequest $request)
         {
             $validatedRequest = $request->validated();
+
             try {
                 
                 $duplicateSupp = Suppliers::where('name',$validatedRequest['name'])
@@ -344,6 +345,8 @@ class LibraryController extends Controller
                 {
                     return redirect()->back()->with('warning', 'Supplier name already exist. Please choose another name');
                 }
+                
+            // dd($validatedRequest);
                 
                 $supplier = Suppliers::create($validatedRequest);
 
@@ -414,7 +417,9 @@ class LibraryController extends Controller
 
         public function createItem(StoreItemRequest $request)
         {
+
             $validatedRequest = $request->validated();
+            // dd($validatedRequest);
 
             $item = Items::create($validatedRequest);
  

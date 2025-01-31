@@ -25,7 +25,7 @@ class StoreItemRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'assetName' => [
+            'name' => [
                 'required',
                 'string',
                 'max:255',
